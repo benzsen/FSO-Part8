@@ -7,10 +7,12 @@ import { ALL_AUTHORS, ADD_BORN } from '../queries'
 const Authors = (props) => {
   const [name, setName] = useState("")
   const [born, setBorn] = useState("")
-  const result = useQuery(ALL_AUTHORS)
   const [addBorn] = useMutation(ADD_BORN, {
     refetchQueries: [ { query: ALL_AUTHORS } ]
   })
+
+  const result = useQuery(ALL_AUTHORS)
+  console.log("result", result);
 
   if (!props.show) {
     return null
