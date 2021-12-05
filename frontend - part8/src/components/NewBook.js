@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
 import {ADD_BOOK, ALL_BOOKS} from '../queries'
 
-
-
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -23,7 +21,6 @@ const NewBook = (props) => {
     event.preventDefault()
     addBook({variables:{title, author, published: Number(published), genres}})
     
-
     setTitle('')
     setPublished('')
     setAuthor('')
