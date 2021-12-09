@@ -1,41 +1,39 @@
 import React, {useState} from 'react'
 import { useQuery, useLazyQuery } from '@apollo/client'
-import { ALL_BOOKS } from '../queries'
+import { ALL_BOOKS, USER_GENRE } from '../queries'
 import { shouldCanonizeResults } from '@apollo/client/cache/inmemory/helpers'
 
-const Books = (props) => {
+const Recommend = (props) => {
   const [genre, setGenre] = useState("")
-  const allResult = useQuery(ALL_BOOKS)
+
+  const userGenre = useQuery(USER_GENRE)
+  
   const resultByGenre = useQuery(ALL_BOOKS, {
     variables: {genre}
   })
-    
+
   if (!props.show) {
     return null
   }
 
-  if (allResult.loading || resultByGenre.loading)  {
+  if (resultByGenre.loading) {
     return <div>loading...</div>
   }
+  else {
+    setGenre(userGenre.data.me.favoriteGenre)
+    console.log(userGenre.data.me.favoriteGenre);
+  }
+
+  //Update genre in query once userGenre !undefined
 
   const books = resultByGenre.data.allBooks
-
-  const filteredBooks = allResult.data.allBooks
-  let genres = []
-  
-  filteredBooks.map(b => 
-    b.genres.forEach(e => {
-      if(!genres.includes(e)){
-      genres = genres.concat(e)
-      }
-    })
-  )
   
   return (
     <div>
-      <h2>books</h2>
+      <h2>Recommendations</h2>
 
       <table>
+        <thead>Books in your favorite genre {}</thead>
         <tbody>
           <tr>
             <th></th>
@@ -55,14 +53,8 @@ const Books = (props) => {
           )}
         </tbody>
       </table>
-      <div>
-        {genres.map(g =>
-          <button key={g} onClick={()=>setGenre(g)}>{g}</button>
-          //onclick trigger function to filter books(Query with parameters)
-        )}          
-      </div>
     </div>
   )
 }
 
-export default Books
+export default Recommend
