@@ -12,7 +12,7 @@ const Authors = (props) => {
   })
 
   const result = useQuery(ALL_AUTHORS)
-  console.log("result", result);
+  //console.log("result", result);
 
   if (!props.show) {
     return null
@@ -26,7 +26,7 @@ const Authors = (props) => {
 
   const submit = async (event) => {
     event.preventDefault()
-    console.log(name,born);
+    //console.log(name,born);
     addBorn({variables:{name, setBornTo: Number(born)}})
     
     setName('')
