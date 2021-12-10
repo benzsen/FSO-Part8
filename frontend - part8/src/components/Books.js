@@ -56,6 +56,7 @@ const Books = (props) => {
         </tbody>
       </table>
       <div>
+        <button onClick={()=>setGenre("")}>all</button>
         {genres.map(g =>
           <button key={g} onClick={()=>setGenre(g)}>{g}</button>
           //onclick trigger function to filter books(Query with parameters)

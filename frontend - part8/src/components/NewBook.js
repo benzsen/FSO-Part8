@@ -19,7 +19,30 @@ const NewBook = (props) => {
 
   const submit = async (event) => {
     event.preventDefault()
-    addBook({variables:{title, author, published: Number(published), genres}})
+    addBook({variables:{title, author, published: Number(published), genres},
+      refetchQueries: [ { query: ALL_BOOKS } ],
+      update: (store, response) => {
+        genres.forEach((genre) => {
+          try {
+            const dataInStore = store.readQuery({
+              query: ALL_BOOKS,
+              variables: { genre }
+            })
+
+            store.writeQuery({
+              query: ALL_BOOKS, 
+              variables: { genre },
+              data: {
+                allBooks: [...dataInStore.allBooks].concat(response.data.addBook)
+              }
+            })
+
+          } catch(e) {
+            console.log('not queried', genre)
+          }
+        })
+      }
+    })
     
     setTitle('')
     setPublished('')
